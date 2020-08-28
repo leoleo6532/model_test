@@ -1,5 +1,4 @@
 import matplotlib
-matplotlib.use('Agg')
 import os
 from keras.models import load_model
 import numpy as np
@@ -31,7 +30,7 @@ def get_inputs(src=[]):
         pre_x.append(input)  # input一張圖片
     pre_x = np.array(pre_x) / 255.0
     return pre_x
-while(1):
+while(1):  
  path = 'C:\\Last_test\\DL\\MAIN\\AI_TEST\\sick'
  count = 0
  for root,dirs,files in os.walk(path):    #遍历统计
@@ -40,7 +39,7 @@ while(1):
              count += 1   #统计文件夹下文件个数
  time.sleep(0.1)
  print ("文件的總數量為：",count)
- if(count == 1):    
+ if(count != 0):    
     #要預測的圖片儲存在這裡
     predict_dir = 'C:\\Last_test\\DL\\MAIN\\AI_TEST'
     #這個路徑下有兩個檔案，分別是cat和dog
@@ -66,20 +65,21 @@ while(1):
 
     j = 0
     qq = 0
+    #time.sleep(2)
     for i in range(len(pre_y)):
-        #time.sleep(0.1)
-        cc = fdd[i][34:]
+        cc = fdd[i][34:-4]
         #j = j + 1 
         sickvalue =  1 - pre_y[i][0] #有病
-        print("Time:"+str(datetime.datetime.now())[:19]+  "  病患ID:"+cc+"    發病機率為:  "+str(sickvalue*100)[:5]+"%")  
-        main = " ID:"+cc+",得病率:"+str(sickvalue*100)[:5]+"%" 
-        payload=[{"id":"data", "value":[main]}]
+        print("受測者"+":"+cc+",得病率:"+str(sickvalue*100)[:5]+"%")  
+        main = "受測者"+":"+cc+",得病率:"+str(sickvalue*100)[:5]+"%" 
+        payload=[{"id":"data2", "value":[main]}]
         response = requests.post(apiURL, headers=headers, data=json.dumps(payload))
         #print(fdd[i])  
         print("測試資料數量:"+str(len(pre_y))+"誤判數量:"+str(j))
-        os.remove(fd)
+        os.remove(fd) 
+        #time.sleep(2)
  else:
      print("waiting")    
-        
+    
 
 
